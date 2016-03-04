@@ -14,12 +14,14 @@ class PyGameTestView(object):
 
     def draw(self):
         """ Draw the game to the pygame window """
-        #self.screen.fill(pygame.Color('black')) #want to replace with image
         background = pygame.image.load('room2.png')
         self.screen.blit(pygame.transform.scale(background, size), (0,0))
+        char = pygame.image.load('character.png')
+        charR = pygame.transform.scale(char, (100,100))
+        #roughtly the correct size
+        # worth noting that the character image is shit with a huge border
+        self.screen.blit(charR, (self.model.char.x,self.model.char.y)) #that tuple should be based on the char model
         pygame.display.flip()
-        # see pygame window resizing to find docs for this. current broked
-        #self.screen.blit(background, (0,0))
         #draw the rest of the game
         #pygame.display.update()
 
@@ -31,13 +33,22 @@ class PyGameTestModel(object):
 
         # Define things like brick height and width here for BB
         # Also creates list of bricks, paddle, and ball
+        self.char = Character(0,0)
 
     def update(self):
         """ update the model state"""
         # self.ball.update() is what BB calls. 
         # should call game objects update functions
+        
 
 # Here Paul defined some other objects like Ball and Paddle 
+class Character(object):
+    "represents the character"
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        #should probably do the image loading in here
+
 
 class PyGameTestController(object):
     """This is a test controller for my object"""
@@ -48,13 +59,19 @@ class PyGameTestController(object):
         """ Look for keypresses and modify positions"""
         pressed = pygame.key.get_pressed()
         if pressed[pygame.K_LEFT]:
-            # do a thing
-            pass
+            self.model.char.x -= 5
+        if pressed[pygame.K_RIGHT]:
+            self.model.char.x += 5
+        if pressed[pygame.K_UP]:
+            self.model.char.y -= 5
+        if pressed[pygame.K_DOWN]:
+            self.model.char.y += 5
 if __name__ == '__main__':
     pygame.init()
-    VideoInfo = pygame.display.Info()#gets the display info
-    size = (VideoInfo.current_w, VideoInfo.current_h)#sets the game to fill creen
-
+    #VideoInfo = pygame.display.Info()#gets the display info
+    #size = (VideoInfo.current_w, VideoInfo.current_h)#sets the game to fill creen
+    #That works, but it doesn't geneate in the right aspect ratio
+    size = (640, 480)
     model = PyGameTestModel(size[0], size[1])
     view = PyGameTestView(model, size)
     controller = PyGameTestController(model)
