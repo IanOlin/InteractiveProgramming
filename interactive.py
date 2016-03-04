@@ -14,14 +14,14 @@ class PyGameTestView(object):
 
     def draw(self):
         """ Draw the game to the pygame window """
-        self.screen.fill(pygame.Color('black')) #want to replace with image
+        #self.screen.fill(pygame.Color('black')) #want to replace with image
         background = pygame.image.load('room2.png')
-        #self.screen.blit(pygame.transform.scale(background, (640,480)) (0,0))
-        #pygame.display.flip()
+        self.screen.blit(pygame.transform.scale(background, size), (0,0))
+        pygame.display.flip()
         # see pygame window resizing to find docs for this. current broked
-        self.screen.blit(background, (0,0))
+        #self.screen.blit(background, (0,0))
         #draw the rest of the game
-        pygame.display.update()
+        #pygame.display.update()
 
 class PyGameTestModel(object):
     """This is a test model for my game"""
@@ -52,7 +52,8 @@ class PyGameTestController(object):
             pass
 if __name__ == '__main__':
     pygame.init()
-    size = (320,240)
+    VideoInfo = pygame.display.Info()#gets the display info
+    size = (VideoInfo.current_w, VideoInfo.current_h)#sets the game to fill creen
 
     model = PyGameTestModel(size[0], size[1])
     view = PyGameTestView(model, size)
