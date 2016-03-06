@@ -75,6 +75,7 @@ class GameController(object):
         if pressed[pygame.K_DOWN]:
             self.model.char.y += 5 
             self.model.char.set_image('images/character-back.png')
+#TODO: build a list for each direction, on pres, iterate through the set of images for that direction.
 if __name__ == '__main__':
     pygame.init()
     #VideoInfo = pygame.display.Info()#gets the display info
