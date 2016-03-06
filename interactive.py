@@ -62,6 +62,21 @@ class GameController(object):
     """This is a test controller for my object"""
     def __init__(self, model):
         self.model = model
+        self.leftimages =  ['images/left1.png',
+                            'images/left2.png',
+                            'images/left3.png',
+                            'images/left4.png']
+        self.li = 0
+        self.upimages =    ['images/up1.png',
+                            'images/up2.png',
+                            'images/up3.png',
+                            'images/up4.png']
+        self.ui = 0
+        self.downimages =  ['images/down1.png',
+                            'images/down2.png',
+                            'images/down3.png',
+                            'images/down4.png']
+        self.di = 0
         self.rightimages = ['images/right1.png',
                             'images/right2.png',
                             'images/right3.png',
@@ -73,16 +88,20 @@ class GameController(object):
         pressed = pygame.key.get_pressed()
         if pressed[pygame.K_LEFT]:
             self.model.char.x -= 5
+            self.model.char.set_image(self.leftimages[self.li])
+            self.li = (self.li + 1)%4
         if pressed[pygame.K_RIGHT]:
             self.model.char.x += 5
             self.model.char.set_image(self.rightimages[self.ri])
             self.ri = (self.ri + 1)%4
         if pressed[pygame.K_UP]:
             self.model.char.y -= 5
-            self.model.char.set_image('images/back2.png')
+            self.model.char.set_image(self.upimages[self.ui])
+            self.ui = (self.ui + 1)%4
         if pressed[pygame.K_DOWN]:
             self.model.char.y += 5 
-            self.model.char.set_image('images/front2.png')
+            self.model.char.set_image(self.downimages[self.di])
+            self.di = (self.di + 1)%4
 #TODO: build a list for each direction, on pres, iterate through the set of images for that direction.
 if __name__ == '__main__':
     pygame.init()
