@@ -7,7 +7,7 @@ from random import choice
 #TODO split the model view and controller into different files maybe?
 
 class GameView(object):
-    """ This is a test view for my game"""
+    """this view handles displaying most o the things"""
     def __init__(self, model, size):
         self.model = model
         self.screen = pygame.display.set_mode(size, HWSURFACE|DOUBLEBUF|RESIZABLE)
@@ -18,15 +18,8 @@ class GameView(object):
 #        self.screen.blit(pygame.transform.scale(background, size), (0,0))
         scaled_bg = pygame.transform.scale(background, size)
         self.screen.blit(scaled_bg, (0,0))
-#        char = pygame.image.load('character.png')
         char = self.model.char.img
-#       should algorithmically be scaling character to the same scaling
-#       ratio that the bg gets scaled. For now, I won't.
-#        charR = pygame.transform.scale(char, (100,100))
-    #   roughtly the correct size
-        charR = char
-    # worth noting that the character image is shit with a huge border
-        self.screen.blit(charR, (self.model.char.x,self.model.char.y)) #that tuple should be based on the char model
+        self.screen.blit(char, (self.model.char.x,self.model.char.y))
         pygame.display.flip()
         #draw the rest of the game
         #pygame.display.update()
@@ -44,23 +37,25 @@ class GameModel(object):
 
     def update(self):
         """ update the model state"""
+        #TODO:consider  actually having the character model update in here rather than in the controlller.
         # self.ball.update() is what BB calls.
         # should call game objects update functions
 
 
 # Here Paul defined some other objects like Ball and Paddle
 class Character(object):
-    "represents the character"
+    """represents the character, sets it's position and image"""
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        #should probably do the image loading in here
-    def set_image(self, imagename = 'images/character.png'):
+    def set_image(self, imagename = 'images/up2.png'):
+        """ loads a given image as the character model"""
         self.img = pygame.image.load(imagename)
 
 class GameController(object):
-    """This is a test controller for my object"""
+    """This is the controller for the game. It contains all the animation data """
     def __init__(self, model):
+        """ initializes the model and all of the image banks for the character"""
         self.model = model
         self.leftimages =  ['images/left1.png',
                             'images/left2.png',
@@ -84,7 +79,7 @@ class GameController(object):
         self.ri = 0
 
     def update(self):
-        """ Look for keypresses and modify positions"""
+        """ Updates the game state based on keypresses. Also animates walking right now"""
         pressed = pygame.key.get_pressed()
         if pressed[pygame.K_LEFT]:
             self.model.char.x -= 5
@@ -102,10 +97,8 @@ class GameController(object):
             self.model.char.y += 5 
             self.model.char.set_image(self.downimages[self.di])
             self.di = (self.di + 1)%4
-#TODO: build a list for each direction, on pres, iterate through the set of images for that direction.
 if __name__ == '__main__':
     pygame.init()
-    #VideoInfo = pygame.display.Info()#gets the display info
     #size = (VideoInfo.current_w, VideoInfo.current_h)#sets the game to fill creen
     #That works, but it doesn't geneate in the right aspect ratio
     size = (640, 480) # useful
