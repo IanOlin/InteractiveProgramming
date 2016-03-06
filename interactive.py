@@ -71,8 +71,10 @@ class GameController(object):
             self.model.char.x += 5
         if pressed[pygame.K_UP]:
             self.model.char.y -= 5
+            self.model.char.set_image()
         if pressed[pygame.K_DOWN]:
             self.model.char.y += 5 
+            self.model.char.set_image('images/character-back.png')
 if __name__ == '__main__':
     pygame.init()
     #VideoInfo = pygame.display.Info()#gets the display info
