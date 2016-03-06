@@ -16,7 +16,8 @@ class GameView(object):
         """ Draw the game to the pygame window """
         background = pygame.image.load('images/room2.png')
 #        self.screen.blit(pygame.transform.scale(background, size), (0,0))
-        self.screen.blit(background, (0,0))
+        scaled_bg = pygame.transform.scale(background, size)
+        self.screen.blit(scaled_bg, (0,0))
 #        char = pygame.image.load('character.png')
         char = self.model.char.img
 #       should algorithmically be scaling character to the same scaling
@@ -61,6 +62,11 @@ class GameController(object):
     """This is a test controller for my object"""
     def __init__(self, model):
         self.model = model
+        self.rightimages = ['images/right1.png',
+                            'images/right2.png',
+                            'images/right3.png',
+                            'images/right4.png']
+        self.ri = 0
 
     def update(self):
         """ Look for keypresses and modify positions"""
@@ -69,20 +75,22 @@ class GameController(object):
             self.model.char.x -= 5
         if pressed[pygame.K_RIGHT]:
             self.model.char.x += 5
+            self.model.char.set_image(self.rightimages[self.ri])
+            self.ri = (self.ri + 1)%4
         if pressed[pygame.K_UP]:
             self.model.char.y -= 5
-            self.model.char.set_image()
+            self.model.char.set_image('images/back2.png')
         if pressed[pygame.K_DOWN]:
             self.model.char.y += 5 
-            self.model.char.set_image('images/character-back.png')
+            self.model.char.set_image('images/front2.png')
 #TODO: build a list for each direction, on pres, iterate through the set of images for that direction.
 if __name__ == '__main__':
     pygame.init()
     #VideoInfo = pygame.display.Info()#gets the display info
     #size = (VideoInfo.current_w, VideoInfo.current_h)#sets the game to fill creen
     #That works, but it doesn't geneate in the right aspect ratio
-   # size = (640, 480)
-    size = (320,240)
+    size = (640, 480) # useful
+    # size = (320,240)  #'native'
     model = GameModel(size[0], size[1])
     view = GameView(model, size)
     controller = GameController(model)
@@ -94,4 +102,4 @@ if __name__ == '__main__':
         model.update()
         controller.update()
         view.draw()
-        time.sleep(.1)
+        time.sleep(.3)
