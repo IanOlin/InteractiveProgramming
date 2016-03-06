@@ -14,9 +14,10 @@ class PyGameTestView(object):
 
     def draw(self):
         """ Draw the game to the pygame window """
-        background = pygame.image.load('room2.png')
+        background = pygame.image.load('images/room2.png')
         self.screen.blit(pygame.transform.scale(background, size), (0,0))
-        char = pygame.image.load('character.png')
+#        char = pygame.image.load('character.png')
+        char = self.model.char.img
         charR = pygame.transform.scale(char, (100,100))
         #roughtly the correct size
         # worth noting that the character image is shit with a huge border
@@ -34,6 +35,7 @@ class PyGameTestModel(object):
         # Define things like brick height and width here for BB
         # Also creates list of bricks, paddle, and ball
         self.char = Character(0,0)
+        self.char.set_model()
 
     def update(self):
         """ update the model state"""
@@ -48,8 +50,9 @@ class Character(object):
         self.x = x
         self.y = y
         #should probably do the image loading in here
-
-
+    def set_model(self, imagename = ''):
+        self.img = pygame.image.load('images/character.png')
+        
 class PyGameTestController(object):
     """This is a test controller for my object"""
     def __init__(self, model):
