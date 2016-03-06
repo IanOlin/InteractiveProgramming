@@ -15,12 +15,16 @@ class GameView(object):
     def draw(self):
         """ Draw the game to the pygame window """
         background = pygame.image.load('images/room2.png')
-        self.screen.blit(pygame.transform.scale(background, size), (0,0))
+#        self.screen.blit(pygame.transform.scale(background, size), (0,0))
+        self.screen.blit(background, (0,0))
 #        char = pygame.image.load('character.png')
         char = self.model.char.img
-        charR = pygame.transform.scale(char, (100,100))
-        #roughtly the correct size
-        # worth noting that the character image is shit with a huge border
+#       should algorithmically be scaling character to the same scaling
+#       ratio that the bg gets scaled. For now, I won't.
+#        charR = pygame.transform.scale(char, (100,100))
+    #   roughtly the correct size
+        charR = char
+    # worth noting that the character image is shit with a huge border
         self.screen.blit(charR, (self.model.char.x,self.model.char.y)) #that tuple should be based on the char model
         pygame.display.flip()
         #draw the rest of the game
@@ -68,13 +72,14 @@ class GameController(object):
         if pressed[pygame.K_UP]:
             self.model.char.y -= 5
         if pressed[pygame.K_DOWN]:
-            self.model.char.y += 5
+            self.model.char.y += 5 
 if __name__ == '__main__':
     pygame.init()
     #VideoInfo = pygame.display.Info()#gets the display info
     #size = (VideoInfo.current_w, VideoInfo.current_h)#sets the game to fill creen
     #That works, but it doesn't geneate in the right aspect ratio
-    size = (640, 480)
+   # size = (640, 480)
+    size = (320,240)
     model = GameModel(size[0], size[1])
     view = GameView(model, size)
     controller = GameController(model)
@@ -86,4 +91,4 @@ if __name__ == '__main__':
         model.update()
         controller.update()
         view.draw()
-        time.sleep(.001)
+        time.sleep(.1)
