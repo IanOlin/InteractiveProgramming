@@ -1,12 +1,12 @@
 #vim : tabstop=8 expandtab shiftwidth=4 softtabstop=4
 import pygame
-from pygame.locals import * 
+from pygame.locals import *
 import time
 from random import choice
 
 #TODO split the model view and controller into different files maybe?
 
-class PyGameTestView(object):
+class GameView(object):
     """ This is a test view for my game"""
     def __init__(self, model, size):
         self.model = model
@@ -26,7 +26,7 @@ class PyGameTestView(object):
         #draw the rest of the game
         #pygame.display.update()
 
-class PyGameTestModel(object):
+class GameModel(object):
     """This is a test model for my game"""
     def __init__(self, width, height):
         self.height = height
@@ -35,25 +35,25 @@ class PyGameTestModel(object):
         # Define things like brick height and width here for BB
         # Also creates list of bricks, paddle, and ball
         self.char = Character(0,0)
-        self.char.set_model()
+        self.char.set_image()
 
     def update(self):
         """ update the model state"""
-        # self.ball.update() is what BB calls. 
+        # self.ball.update() is what BB calls.
         # should call game objects update functions
-        
 
-# Here Paul defined some other objects like Ball and Paddle 
+
+# Here Paul defined some other objects like Ball and Paddle
 class Character(object):
     "represents the character"
     def __init__(self, x, y):
         self.x = x
         self.y = y
         #should probably do the image loading in here
-    def set_model(self, imagename = ''):
-        self.img = pygame.image.load('images/character.png')
-        
-class PyGameTestController(object):
+    def set_image(self, imagename = 'images/character.png'):
+        self.img = pygame.image.load(imagename)
+
+class GameController(object):
     """This is a test controller for my object"""
     def __init__(self, model):
         self.model = model
@@ -75,9 +75,9 @@ if __name__ == '__main__':
     #size = (VideoInfo.current_w, VideoInfo.current_h)#sets the game to fill creen
     #That works, but it doesn't geneate in the right aspect ratio
     size = (640, 480)
-    model = PyGameTestModel(size[0], size[1])
-    view = PyGameTestView(model, size)
-    controller = PyGameTestController(model)
+    model = GameModel(size[0], size[1])
+    view = GameView(model, size)
+    controller = GameController(model)
     running = True
     while running:
         for event in pygame.event.get():
@@ -87,4 +87,3 @@ if __name__ == '__main__':
         controller.update()
         view.draw()
         time.sleep(.001)
-
