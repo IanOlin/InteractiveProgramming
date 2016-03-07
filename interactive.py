@@ -56,6 +56,9 @@ class SpriteSheet(object):
 class CharacterSprite(pygame.sprite.Sprite):
     """Sprite representation of the character"""
     def __init__(self, x_coor, y_coor):
+
+        super(CharacterSprite, self).__init__()
+
         self.x = x_coor
         self.y = y_coor
 
