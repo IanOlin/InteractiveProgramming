@@ -65,18 +65,22 @@ class CharacterSprite(pygame.sprite.Sprite):
         #list of colisions
         sprite_sheet = SpriteSheet('images/smallspritesheet.png')
         for i in range(0,109, 36):
-            image = sprite_sheet.get_image(i,0,36, 64)
+            image = sprite_sheet.get_image(i,0,36, 60)
             self.walking_frames_d.append(image)
         for i in range(0,109, 36):
-            image = sprite_sheet.get_image(i,65,36, 64)
+            image = sprite_sheet.get_image(i,62,36, 60)
             self.walking_frames_l.append(image)
         for i in range(0,109, 36):
-            image = sprite_sheet.get_image(i,130,36, 64)
+            image = sprite_sheet.get_image(i,126,36, 60)
             self.walking_frames_r.append(image)
         for i in range(0,109, 36):
-            image = sprite_sheet.get_image(i,195,36, 64)
+            image = sprite_sheet.get_image(i,185,36, 70)
             self.walking_frames_u.append(image)
        
+        self.walking_frames_d[3] = self.walking_frames_d[1]
+        self.walking_frames_l[3] = (self.walking_frames_l[1])
+        self.walking_frames_u[3] = (self.walking_frames_u[1])
+        self.walking_frames_r[3] = (self.walking_frames_r[1])
         self.image = self.walking_frames_d[1]
         self.rect = self.image.get_rect()
 
@@ -126,4 +130,4 @@ if __name__ == '__main__':
         model.update()
         controller.update()
         view.draw()
-        time.sleep(.01)
+        time.sleep(.05)
