@@ -15,14 +15,11 @@ class GameView(object):
     def draw(self):
         """ Draw the game to the pygame window """
         background = pygame.image.load('images/room2.png')
-#        self.screen.blit(pygame.transform.scale(background, size), (0,0))
         scaled_bg = pygame.transform.scale(background, size)
         self.screen.blit(scaled_bg, (0,0))
-        char = self.model.char.img
+        char = self.model.char.image
         self.screen.blit(char, (self.model.char.x,self.model.char.y))
         pygame.display.flip()
-        #draw the rest of the game
-        #pygame.display.update()
 
 class GameModel(object):
     """This is a test model for my game"""
@@ -32,17 +29,58 @@ class GameModel(object):
 
         # Define things like brick height and width here for BB
         # Also creates list of bricks, paddle, and ball
-        self.char = Character(0,0)
-        self.char.set_image()
+        
+        self.char = CharacterSprite(0,0)
 
-    def update(self):
+        #self.char = Character(0,0)
+        #self.char.set_image()
+
+    def update(self, control=0):
         """ update the model state"""
-        #TODO:consider  actually having the character model update in here rather than in the controlller.
-        # self.ball.update() is what BB calls.
-        # should call game objects update functions
+        if control == 'left':
+            self.char = self.char
 
+class SpriteSheet(object):
+    """Class used to grab images out of a sprite sheet."""
+    def __init__(self, file_name= 'images/smallspritesheet.png'):
+        self.sprite_sheet = pygame.image.load(file_name)
+    def get_image(self, x, y, width, height):
+        """grab an image out of the spritesheet"""
+        image = pygame.Surface([width, height])
 
-# Here Paul defined some other objects like Ball and Paddle
+        image.blit(self.sprite_sheet, (0,0), (x, y, width, height))
+
+        return image
+class CharacterSprite(pygame.sprite.Sprite):
+    """Sprite representation of the character"""
+    def __init__(self, x_coor, y_coor):
+        self.x = x_coor
+        self.y = y_coor
+
+        self.walking_frames_l = []
+        self.walking_frames_r = []
+        self.walking_frames_u = []
+        self.walking_frames_d = []
+
+        self.direction = 'd'
+        #list of colisions
+        sprite_sheet = SpriteSheet('images/smallspritesheet.png')
+        for i in range(0,109, 35):
+            image = sprite_sheet.get_image(i,0,35, 64)
+            self.walking_frames_d.append(image)
+        for i in range(0,109, 35):
+            image = sprite_sheet.get_image(i,65,35, 64)
+            self.walking_frames_l.append(image)
+        for i in range(0,109, 35):
+            image = sprite_sheet.get_image(i,130,35, 64)
+            self.walking_frames_r.append(image)
+        for i in range(0,109, 35):
+            image = sprite_sheet.get_image(i,195,35, 64)
+            self.walking_frames_u.append(image)
+       
+        self.image = self.walking_frames_d[1]
+        self.rect = self.image.get_rect()
+
 class Character(object):
     """represents the character, sets it's position and image"""
     def __init__(self, x, y):
@@ -83,20 +121,20 @@ class GameController(object):
         pressed = pygame.key.get_pressed()
         if pressed[pygame.K_LEFT]:
             self.model.char.x -= 5
-            self.model.char.set_image(self.leftimages[self.li])
-            self.li = (self.li + 1)%4
+#            self.model.char.set_image(self.leftimages[self.li])
+#            self.li = (self.li + 1)%4
         if pressed[pygame.K_RIGHT]:
             self.model.char.x += 5
-            self.model.char.set_image(self.rightimages[self.ri])
-            self.ri = (self.ri + 1)%4
+#            self.model.char.set_image(self.rightimages[self.ri])
+#            self.ri = (self.ri + 1)%4
         if pressed[pygame.K_UP]:
             self.model.char.y -= 5
-            self.model.char.set_image(self.upimages[self.ui])
-            self.ui = (self.ui + 1)%4
+#            self.model.char.set_image(self.upimages[self.ui])
+#            self.ui = (self.ui + 1)%4
         if pressed[pygame.K_DOWN]:
             self.model.char.y += 5 
-            self.model.char.set_image(self.downimages[self.di])
-            self.di = (self.di + 1)%4
+#            self.model.char.set_image(self.downimages[self.di])
+#            self.di = (self.di + 1)%4
 if __name__ == '__main__':
     pygame.init()
     #size = (VideoInfo.current_w, VideoInfo.current_h)#sets the game to fill creen
@@ -114,4 +152,4 @@ if __name__ == '__main__':
         model.update()
         controller.update()
         view.draw()
-        time.sleep(.3)
+        time.sleep(.01)
