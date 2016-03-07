@@ -5,7 +5,9 @@ import time
 from random import choice
 
 #TODO split the model view and controller into different files maybe?
-
+#docs:
+# pygame.org/project-Rect+collision+Reponse-1061-.html
+#that link was hand typed so fuck off
 class GameView(object):
     """this view handles displaying most o the things"""
     def __init__(self, model, size):
