@@ -32,8 +32,6 @@ class GameModel(object):
         
         self.char = CharacterSprite(0,0)
 
-        #self.char = Character(0,0)
-        #self.char.set_image()
 
     def update(self, control=0):
         """ update the model state"""
@@ -66,17 +64,17 @@ class CharacterSprite(pygame.sprite.Sprite):
         self.direction = 'd'
         #list of colisions
         sprite_sheet = SpriteSheet('images/smallspritesheet.png')
-        for i in range(0,109, 35):
-            image = sprite_sheet.get_image(i,0,35, 64)
+        for i in range(0,109, 36):
+            image = sprite_sheet.get_image(i,0,36, 64)
             self.walking_frames_d.append(image)
-        for i in range(0,109, 35):
-            image = sprite_sheet.get_image(i,65,35, 64)
+        for i in range(0,109, 36):
+            image = sprite_sheet.get_image(i,65,36, 64)
             self.walking_frames_l.append(image)
-        for i in range(0,109, 35):
-            image = sprite_sheet.get_image(i,130,35, 64)
+        for i in range(0,109, 36):
+            image = sprite_sheet.get_image(i,130,36, 64)
             self.walking_frames_r.append(image)
-        for i in range(0,109, 35):
-            image = sprite_sheet.get_image(i,195,35, 64)
+        for i in range(0,109, 36):
+            image = sprite_sheet.get_image(i,195,36, 64)
             self.walking_frames_u.append(image)
        
         self.image = self.walking_frames_d[1]
@@ -88,35 +86,29 @@ class GameController(object):
     def __init__(self, model):
         """ initializes the model and all of the image banks for the character"""
         self.model = model
-
+        self.li = 0
+        self.di =0
+        self.ri =0
+        self.ui =0
     def update(self):
         """ Updates the game state based on keypresses. Also animates walking right now"""
         pressed = pygame.key.get_pressed()
         if pressed[pygame.K_LEFT]:
+            self.li = (self.li+1)%4
             self.model.char.x -= 5
-            self.model.char.image = self.model.char.walking_frames_l[2]
-#            self.li = (self.li + 1)%4
+            self.model.char.image = self.model.char.walking_frames_l[self.li]
         if pressed[pygame.K_RIGHT]:
-           # self.model.char.update('right')
+             self.ri = (self.ri+1)%4
              self.model.char.x += 5
-#            self.model.char.set_image(self.rightimages[self.ri])
-             self.model.char.image = self.model.char.walking_frames_r[2]
-#            self.li = (self.li + 1)%4
-#            self.ri = (self.ri + 1)%4
+             self.model.char.image = self.model.char.walking_frames_r[self.ri]
         if pressed[pygame.K_UP]:
-          #  self.model.char.update('up')
+            self.ui = (self.ui + 1)%4
             self.model.char.y -= 5
-            self.model.char.image = self.model.char.walking_frames_u[2]
-#            self.li = (self.li + 1)%4
-#            self.model.char.set_image(self.upimages[self.ui])
-#            self.ui = (self.ui + 1)%4
+            self.model.char.image = self.model.char.walking_frames_u[self.ui]
         if pressed[pygame.K_DOWN]:
-           # self.model.char.update('down')
-            self.model.char.image = self.model.char.walking_frames_d[2]
-#            self.li = (self.li + 1)%4
+            self.di = (self.di +1)%4
+            self.model.char.image = self.model.char.walking_frames_d[self.di]
             self.model.char.y += 5 
-#            self.model.char.set_image(self.downimages[self.di])
-#            self.di = (self.di + 1)%4
 if __name__ == '__main__':
     pygame.init()
     #size = (VideoInfo.current_w, VideoInfo.current_h)#sets the game to fill creen
