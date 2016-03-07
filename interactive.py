@@ -81,78 +81,40 @@ class CharacterSprite(pygame.sprite.Sprite):
        
         self.image = self.walking_frames_d[1]
         self.rect = self.image.get_rect()
-        def update(self, control):
-            if control == 'left':
-                self.char.x -= 5
-                #update frame
-            if control == 'right':
-                self.char.x += 5
-                #update fram
-            if control == 'down':
-                self.char.y -= 5
-                #frame
-            if control == 'up':
-                self.char.y += 5
-                #frame
-            else:
-                pass
 
-class Character(object):
-    """represents the character, sets it's position and image"""
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-    def set_image(self, imagename = 'images/up2.png'):
-        """ loads a given image as the character model"""
-        self.img = pygame.image.load(imagename)
 
 class GameController(object):
     """This is the controller for the game. It contains all the animation data """
     def __init__(self, model):
         """ initializes the model and all of the image banks for the character"""
         self.model = model
-        self.leftimages =  ['images/left1.png',
-                            'images/left2.png',
-                            'images/left3.png',
-                            'images/left4.png']
-        self.li = 0
-        self.upimages =    ['images/up1.png',
-                            'images/up2.png',
-                            'images/up3.png',
-                            'images/up4.png']
-        self.ui = 0
-        self.downimages =  ['images/down1.png',
-                            'images/down2.png',
-                            'images/down3.png',
-                            'images/down4.png']
-        self.di = 0
-        self.rightimages = ['images/right1.png',
-                            'images/right2.png',
-                            'images/right3.png',
-                            'images/right4.png']
-        self.ri = 0
 
     def update(self):
         """ Updates the game state based on keypresses. Also animates walking right now"""
         pressed = pygame.key.get_pressed()
         if pressed[pygame.K_LEFT]:
-           # self.model.char.x -= 5
-            self.model.char.update('left')
-#            self.model.char.set_image(self.leftimages[self.li])
+            self.model.char.x -= 5
+            self.model.char.image = self.model.char.walking_frames_l[2]
 #            self.li = (self.li + 1)%4
         if pressed[pygame.K_RIGHT]:
-            self.model.char.update('right')
-            # self.model.char.x += 5
+           # self.model.char.update('right')
+             self.model.char.x += 5
 #            self.model.char.set_image(self.rightimages[self.ri])
+             self.model.char.image = self.model.char.walking_frames_r[2]
+#            self.li = (self.li + 1)%4
 #            self.ri = (self.ri + 1)%4
         if pressed[pygame.K_UP]:
-            self.model.char.update('up')
-          #  self.model.char.y -= 5
+          #  self.model.char.update('up')
+            self.model.char.y -= 5
+            self.model.char.image = self.model.char.walking_frames_u[2]
+#            self.li = (self.li + 1)%4
 #            self.model.char.set_image(self.upimages[self.ui])
 #            self.ui = (self.ui + 1)%4
         if pressed[pygame.K_DOWN]:
-            self.model.char.update('down')
-            #self.model.char.y += 5 
+           # self.model.char.update('down')
+            self.model.char.image = self.model.char.walking_frames_d[2]
+#            self.li = (self.li + 1)%4
+            self.model.char.y += 5 
 #            self.model.char.set_image(self.downimages[self.di])
 #            self.di = (self.di + 1)%4
 if __name__ == '__main__':
