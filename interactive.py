@@ -106,14 +106,17 @@ class GameController(object):
             self.li = (self.li+1)%4
             self.model.char.x -= 5
             self.model.char.image = self.model.char.walking_frames_l[self.li]
+            self.effect.play()
         if pressed[pygame.K_RIGHT]:
-             self.ri = (self.ri+1)%4
-             self.model.char.x += 5
-             self.model.char.image = self.model.char.walking_frames_r[self.ri]
+            self.ri = (self.ri+1)%4
+            self.model.char.x += 5
+            self.model.char.image = self.model.char.walking_frames_r[self.ri]
+            self.effect.play()
         if pressed[pygame.K_UP]:
             self.ui = (self.ui + 1)%4
             self.model.char.y -= 5
             self.model.char.image = self.model.char.walking_frames_u[self.ui]
+            self.effect.play()
         if pressed[pygame.K_DOWN]:
             self.di = (self.di +1)%4
             self.model.char.image = self.model.char.walking_frames_d[self.di]
