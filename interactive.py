@@ -11,7 +11,10 @@ class GameView(object):
     def __init__(self, model, size):
         self.model = model
         self.screen = pygame.display.set_mode(size, HWSURFACE|DOUBLEBUF|RESIZABLE)
-
+        pygame.mixer.music.load('TheDarkLake.mp3') #this music might or mightnot play
+        pygame.mixer.music.play(-1)
+        
+        
     def draw(self):
         """ Draw the game to the pygame window """
         background = pygame.image.load('images/room2.png')
@@ -62,7 +65,7 @@ class CharacterSprite(pygame.sprite.Sprite):
         self.walking_frames_d = []
 
         self.direction = 'd'
-        #list of colisions
+        #list of colisions would go here 
         sprite_sheet = SpriteSheet('images/smallspritesheet.png')
         for i in range(0,109, 36):
             image = sprite_sheet.get_image(i,0,36, 60)
@@ -94,6 +97,8 @@ class GameController(object):
         self.di =0
         self.ri =0
         self.ui =0
+        self.effect = pygame.mixer.Sound('step.wav')
+
     def update(self):
         """ Updates the game state based on keypresses. Also animates walking right now"""
         pressed = pygame.key.get_pressed()
@@ -113,6 +118,7 @@ class GameController(object):
             self.di = (self.di +1)%4
             self.model.char.image = self.model.char.walking_frames_d[self.di]
             self.model.char.y += 5 
+            self.effect.play()
 if __name__ == '__main__':
     pygame.init()
     #size = (VideoInfo.current_w, VideoInfo.current_h)#sets the game to fill creen
