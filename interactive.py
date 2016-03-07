@@ -37,8 +37,7 @@ class GameModel(object):
 
     def update(self, control=0):
         """ update the model state"""
-        if control == 'left':
-            self.char = self.char
+        self.char.update(control)
 
 class SpriteSheet(object):
     """Class used to grab images out of a sprite sheet."""
@@ -82,6 +81,21 @@ class CharacterSprite(pygame.sprite.Sprite):
        
         self.image = self.walking_frames_d[1]
         self.rect = self.image.get_rect()
+        def update(self, control):
+            if control == 'left':
+                self.char.x -= 5
+                #update frame
+            if control == 'right':
+                self.char.x += 5
+                #update fram
+            if control == 'down':
+                self.char.y -= 5
+                #frame
+            if control == 'up':
+                self.char.y += 5
+                #frame
+            else:
+                pass
 
 class Character(object):
     """represents the character, sets it's position and image"""
@@ -122,19 +136,23 @@ class GameController(object):
         """ Updates the game state based on keypresses. Also animates walking right now"""
         pressed = pygame.key.get_pressed()
         if pressed[pygame.K_LEFT]:
-            self.model.char.x -= 5
+           # self.model.char.x -= 5
+            self.model.char.update('left')
 #            self.model.char.set_image(self.leftimages[self.li])
 #            self.li = (self.li + 1)%4
         if pressed[pygame.K_RIGHT]:
-            self.model.char.x += 5
+            self.model.char.update('right')
+            # self.model.char.x += 5
 #            self.model.char.set_image(self.rightimages[self.ri])
 #            self.ri = (self.ri + 1)%4
         if pressed[pygame.K_UP]:
-            self.model.char.y -= 5
+            self.model.char.update('up')
+          #  self.model.char.y -= 5
 #            self.model.char.set_image(self.upimages[self.ui])
 #            self.ui = (self.ui + 1)%4
         if pressed[pygame.K_DOWN]:
-            self.model.char.y += 5 
+            self.model.char.update('down')
+            #self.model.char.y += 5 
 #            self.model.char.set_image(self.downimages[self.di])
 #            self.di = (self.di + 1)%4
 if __name__ == '__main__':
