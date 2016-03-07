@@ -11,7 +11,7 @@ class GameView(object):
     def __init__(self, model, size):
         self.model = model
         self.screen = pygame.display.set_mode(size, HWSURFACE|DOUBLEBUF|RESIZABLE)
-        pygame.mixer.music.load('TheDarkLake.mp3') #this music might or mightnot play
+        pygame.mixer.music.load('sounds/TheDarkLake.mp3') #this music might or mightnot play
         pygame.mixer.music.play(-1)
         
         
@@ -97,7 +97,7 @@ class GameController(object):
         self.di =0
         self.ri =0
         self.ui =0
-        self.effect = pygame.mixer.Sound('step.wav')
+        self.effect = pygame.mixer.Sound('sounds/step.wav')
 
     def update(self):
         """ Updates the game state based on keypresses. Also animates walking right now"""
