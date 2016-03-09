@@ -10,6 +10,8 @@ from random import choice
 # that link was hand typed so fuck off
 # the screen is a 20x15 grid of 16x16 pixel tiles
 # at least in 320 I guess it's 32x32 in 640
+"""globals: walls, exit_blocks"""
+
 class GameView(object):
     """this view handles displaying most of the things.
 
@@ -32,6 +34,7 @@ class GameView(object):
         # draws a yellow box where the rect is
         pygame.display.flip()
 
+
 class GameModel(object):
     """This is a test model for my game
 
@@ -43,28 +46,57 @@ class GameModel(object):
         # Define things like brick height and width here for BB
         # Also creates list of bricks, paddle, and ball
 
-        self.char = CharacterSprite(0,0)
+        self.char = CharacterSprite(256,256)
 
         self.game_map = ["....................",
                          "....................",
                          "....................",
                          "....................",
                          "....................",
-                         "......WEWW..........",
+                         "......WXWW..........",
                          "....WWW..WWWWW......",
                          "....W........W......",
                          "....W........W......",
                          "....W..........W....",
                          "....W..........W....",
                          "....W..........W....",
-                         "....WWWWWEEWWWWW....",
-                         "....................",
+                         "....W..........W....",
+                         "....WWWWWXXWWWWW....",
                          "...................."]
 
+        # Parse the level string above. W = wall, X = exit
+        x = y = 0
+        for row in self.game_map:
+            for col in row:
+                if col == "W":
+                    Wall((x, y))
+                if col == "X":
+                    ExitBlock((x, y))
+                x += 32
+            y += 32
+            x = 0
 
     def update(self, control=0):
         """ update the model state"""
         self.char.update(control)
+
+
+class Wall(object):
+    """it walls
+
+    attribute: rect"""
+    def __init__(self, pos):
+        walls.append(self)
+        self.rect = pygame.Rect(pos[0], pos[1], 32, 32)
+
+class ExitBlock(object):
+    """It exits
+
+    attribute: rect"""
+    def __init__(self, pos):
+        exit_blocks.append(self)
+        self.rect = pygame.Rect(pos[0], pos[1], 32, 32)
+
 
 class SpriteSheet(object):
     """Class used to grab images out of a sprite sheet.
@@ -81,6 +113,7 @@ class SpriteSheet(object):
         image.set_colorkey((0,0,0))
 
         return image
+
 
 class CharacterSprite(pygame.sprite.Sprite):
     """Sprite representation of the character.
@@ -120,31 +153,54 @@ class CharacterSprite(pygame.sprite.Sprite):
         self.walking_frames_r[3] = (self.walking_frames_r[1])
         self.image = self.walking_frames_d[1]
         self.rect = self.image.get_rect().inflate(-4,-32)
-        self.rect.move_ip(0,16)
+        self.rect.move_ip(self.x,self.y + 16)
 
+    """These functions move the thing. Should check for collisions and adjust
+    accordingly now? Untested cause the wall rects don't exist yet"""
     def move_left(self, li):
         self.x -= self.step_size
         self.rect.move_ip(-self.step_size, 0)
+
+        for wall in walls:
+            if self.rect.colliderect(wall.rect):
+                self.rect.left = wall.rect.right
+
         self.image = self.walking_frames_l[li]
         self.effect.play()
 
     def move_right(self, ri):
         self.x += self.step_size
         self.rect.move_ip(self.step_size, 0)
+
+        for wall in walls:
+            if self.rect.colliderect(wall.rect):
+                self.rect.right = wall.rect.left
+
         self.image = self.walking_frames_r[ri]
         self.effect.play()
 
     def move_up(self, ui):
         self.y -= self.step_size
         self.rect.move_ip(0, -self.step_size)
+
+        for wall in walls:
+            if self.rect.colliderect(wall.rect):
+                self.rect.top = wall.rect.bottom
+
         self.image = self.walking_frames_u[ui]
         self.effect.play()
 
     def move_down(self, di):
         self.y += self.step_size
         self.rect.move_ip(0, self.step_size)
+
+        for wall in walls:
+            if self.rect.colliderect(wall.rect):
+                self.rect.bottom = wall.rect.top
+
         self.image = self.walking_frames_d[di]
         self.effect.play()
+
 
 class GameController(object):
     """This is the controller for the game. It contains a counter for each
@@ -179,12 +235,19 @@ class GameController(object):
             self.di = (self.di + 1) % 4
             self.model.char.move_down(self.di)
 
+        for exit_block in exit_blocks:
+            if self.model.char.rect.colliderect(exit_block):
+                raise SystemExit, "You lose, fucker!"
+
+
 if __name__ == '__main__':
     pygame.init()
     #size = (VideoInfo.current_w, VideoInfo.current_h)#sets the game to fill screen
     #That works, but it doesn't generate in the right aspect ratio
     size = (640, 480) # useful
     # size = (320, 240)  # 'native'
+    walls = [] # List to hold the walls
+    exit_blocks = [] # List to hold the exits
     model = GameModel(size[0], size[1])
     view = GameView(model, size)
     controller = GameController(model)
