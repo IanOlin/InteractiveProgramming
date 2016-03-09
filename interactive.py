@@ -16,9 +16,7 @@ class GameView(object):
     attributes: model, screen"""
     def __init__(self, model, size):
         self.model = model
-        self.screen = pygame.display.set_mode(size, HWSURFACE|DOUBLEBUF|RESIZABLE)
-        # apparently HWSURFACE is a pain in the ass to work with, and we're
-        # probably getting a SWSURFACE anyway
+        self.screen = pygame.display.set_mode(size)
         pygame.mixer.music.load('sounds/TheDarkLake.mp3') #this music plays
         pygame.mixer.music.play(-1)
 
