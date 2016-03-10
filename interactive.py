@@ -136,13 +136,14 @@ class Connection(object):
     def __init__(self, pos):
         connections.append(self)
         self.rect = pygame.Rect(pos[0], pos[1], 32, 32)
+        self.rect.inflate_ip(2,2)
 
 
 class GameController(object):
     """This is the controller for the game. It contains a counter for each
     direction that controls animation state.
 
-    attributes: model, li, di, ri, ui"""
+    attributes: model, li, di, ri, ui, room_counter"""
     def __init__(self, model, view):
         """ initializes the model and counters"""
         self.model = model
@@ -151,7 +152,8 @@ class GameController(object):
         self.di = 0
         self.ri = 0
         self.ui = 0
-        self.waking =0
+        self.waking = 0
+        self.room_counter = 0
 
     def update(self):
         """ Updates the game state based on keypresses.
@@ -164,6 +166,7 @@ class GameController(object):
                 timer = True
             self.model.char.x = 384
             self.model.char.y = 224
+            self.room_counter = 0
 
             self.model.char.image = self.model.char.walking_frames_d[1]
             self.model.char.rect = self.model.char.image.get_rect().inflate(-4,-32)
@@ -196,7 +199,7 @@ class GameController(object):
                 raise SystemExit, "You won't go out there."
         for connection in connections:
             if self.model.char.rect.colliderect(connection):
-                new_spaces = [(34, 200), (570,200), (240,6),(240, 384)]
+                new_spaces = [(40, 200), (560,200), (240,10),(240, 380)]
                 new_space = choice(new_spaces)
                 self.model.char.x = new_space[0]
                 self.model.char.y = new_space[1]
@@ -205,8 +208,8 @@ class GameController(object):
                 self.model.char.rect = self.model.char.image.get_rect().inflate(-4,-32)
                 self.model.char.rect.move_ip(self.model.char.x,self.model.char.y + 16)
 
-
-                self.model.room_map = level.random_gen()
+                self.room_counter += 1
+                self.model.room_map = level.random_gen(self.room_counter)
                 self.model.generate_room(self.model.room_map)
                 self.view.build_surface(self.model.room_map)
                 self.view.background = 'currentroom.png'
@@ -224,7 +227,7 @@ if __name__ == '__main__':
     controller = GameController(model, view)
     level = Level()
     running = True
-    timer =False
+    timer = False
     countdown = 5
     while running:
         for event in pygame.event.get():
@@ -237,11 +240,11 @@ if __name__ == '__main__':
         if timer == True:
             countdown -= .05
             pygame.mixer.music.load('sounds/Uboa_long.wav')
-            if countdown <.25:
+            if countdown < .25:
                 pygame.mixer.music.play(0)
                 uboa = pygame.image.load('images/UBOAAAAA.png')
                 uboa = pygame.transform.scale(uboa, size)
                 view.screen.blit(uboa,(0,0))
                 pygame.display.update()
-            if countdown <0 :
+            if countdown < 0:
                 running = False

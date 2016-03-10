@@ -6,36 +6,53 @@ import random
 class Level(object):
 	#inherit from spritesheet? probably no, but we will need some sort of visual level as well as the programatic level
 	def __init__(self, x=0):
-            self.x = x
+			self.x = x
 
-	def random_gen(self):
+	def choose(self):
+		res = ''
+		r = random.randint(0,100)
+		if r < self.threshold:
+			res += 'C'
+		else:
+			res += 'W'
+		return res
+
+	def random_gen(self,count):
 		#probably should take size
 		#15 strings of 20 characters
 
 		#generate top wall
+		self.threshold = 13. - count
 		twall = ''
 		for x in range(20):
-			twall += random.choice(['W','W','W','W','W','W','C'])
+			if x < 1 or x > 18:
+				twall+= 'W'
+			else:
+				twall += self.choose()
 
 		bwall = ''
 		for x in range(20):
-			bwall += random.choice(['W','W','W','W','W','W','C'])
+			if x < 1 or x > 18:
+				bwall += 'W'
+			else:
+				bwall += self.choose()
 
 		middlewalls = []
 		for x in range(13):
 			wall = ''
 			if x < 2 or x > 10:
-				wall += random.choice(['W','W','W','W','W','W','C'])
+				wall += self.choose()
 				wall += '..................'
-				wall += random.choice(['W','W','W','W','W','W','C'])
+				wall += self.choose()
 
 			else:
-				wall += random.choice(['W','W','W','W','W','W','C'])
+				wall += self.choose()
 				wall += '..'
 				for y in range(14):
 					wall += random.choice(['.','.','.','.','W'])
 				wall += '..'
-				wall += random.choice(['W','W','W','W','W','W','C'])
+				wall += self.choose()
+				# wall += random.choice(['W','W','W','W','W','W','C'])
 			middlewalls.append(wall)
 
 		walls = []
