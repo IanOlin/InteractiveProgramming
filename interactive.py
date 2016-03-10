@@ -5,7 +5,8 @@ import time
 from random import choice
 from spritesheet_functions import SpriteSheet
 from player import CharacterSprite
-from level import Level
+from level import Level, WallSprite
+
 #TODO split the model view and controller into different files maybe?
 # docs:
 # pygame.org/project-Rect+collision+Reponse-1061-.html
@@ -25,6 +26,9 @@ class GameView(object):
         pygame.mixer.music.load('sounds/TheDarkLake.mp3') #this music plays
         pygame.mixer.music.play(-1)
         self.background = 'images/room2.png'
+        self.wallsprite = WallSprite()
+        self.x=0
+        self.y = 0
 
     def draw(self, filename):
         """ Draw the game to the pygame window"""
@@ -34,8 +38,15 @@ class GameView(object):
         self.screen.blit(scaled_bg, (0,0))
         char = self.model.char.image
         self.screen.blit(char, (self.model.char.x,self.model.char.y))
-        # pygame.draw.rect(self.screen, (255, 200, 0), self.model.char.rect)
-        # draws a yellow box where the rect is
+        
+        
+        for row in self.model.room_map:
+            for col in row:
+                if col == "W":
+                    self.screen.blit(self.wallsprite.image,( self.x, self.y))
+                self.x += 32
+            self.y += 32
+            self.x=0
         pygame.display.flip()
 
 
@@ -120,7 +131,6 @@ class Connection(object):
         self.rect = pygame.Rect(pos[0], pos[1], 32, 32)
 
 
-
 class GameController(object):
     """This is the controller for the game. It contains a counter for each
     direction that controls animation state.
@@ -173,8 +183,7 @@ class GameController(object):
 
                 self.model.room_map = level.random_gen()
                 self.model.generate_room(self.model.room_map)
-                self.view.background = 'images/rooms/yume-24.png'
-
+                self.view.background = 'images/transparent.png'
                 self.model.char.walls = walls
 
 if __name__ == '__main__':
@@ -199,4 +208,4 @@ if __name__ == '__main__':
         model.update()
         controller.update()
         view.draw(view.background)
-        time.sleep(.05)
+        time.sleep(.15)
