@@ -14,7 +14,6 @@ class CharacterSprite(pygame.sprite.Sprite):
         self.y = y_coor
         self.step_size = 5
         self.walls = walls
-        #opens the can of worms of passing in a mutable datatype
 
         self.walking_frames_l = []
         self.walking_frames_r = []
@@ -22,8 +21,6 @@ class CharacterSprite(pygame.sprite.Sprite):
         self.walking_frames_d = []
         self.effect = pygame.mixer.Sound('sounds/step.wav')
 
-        self.direction = 'd'
-        #list of colisions would go here  #(maybe)
         sprite_sheet = SpriteSheet('images/smallspritesheet.png')
         for i in range(0,109, 36):
             image = sprite_sheet.get_image(i,0,36, 60)
@@ -46,10 +43,6 @@ class CharacterSprite(pygame.sprite.Sprite):
         self.rect = self.image.get_rect().inflate(-10,-32)
         self.rect.move_ip(self.x,self.y + 16)
 
-    """These functions move the thing. Should check for collisions and adjust
-    accordingly now? Untested cause the wall rects don't exist yet"""
-
-    #These should really be one move function with two parameters...
     def move_left(self, li):
         self.x -= self.step_size
         self.rect.move_ip(-self.step_size, 0)

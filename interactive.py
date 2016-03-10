@@ -20,9 +20,6 @@ class GameView(object):
         pygame.mixer.music.load('sounds/TheDarkLake.mp3') # this music plays
         pygame.mixer.music.play(-1)
         self.background = 'images/room2.png'
-        self.wallsprite = WallSprite()
-        self.x = 0
-        self.y = 0
 
     def draw(self, filename):
         """ Draw the game to the pygame window"""
@@ -36,6 +33,7 @@ class GameView(object):
         pygame.display.flip()
 
     def build_surface(self, room_map):
+        """Builds the random rooms image for our procdurally generated rooms"""
         surf = pygame.Surface(size)
         x = 0
         y = 0
@@ -60,7 +58,7 @@ class GameView(object):
 
 
 class GameModel(object):
-    """This is a test model for my game
+    """This is the model for the game
 
     attributes: height, width, char, start_map, room_map"""
     def __init__(self, width, height):
@@ -132,6 +130,9 @@ class ExitBlock(object):
         self.rect = pygame.Rect(pos[0], pos[1], 32, 32)
 
 class Connection(object):
+    """It exits
+
+    attribute: rect"""
 
     def __init__(self, pos):
         connections.append(self)
@@ -159,6 +160,7 @@ class GameController(object):
         pressed = pygame.key.get_pressed()
         global timer
         if pressed[pygame.K_9]:
+            #This is the wake up function
             self.waking += 1
             if self.waking * random() > 2:
                 timer = True
@@ -191,6 +193,7 @@ class GameController(object):
             self.di = (self.di + 1) % 4
             self.model.char.move_down(self.di)
 
+        #these functions check for collisions with interactive blocks
         for exit_block in exit_blocks:
             if self.model.char.rect.colliderect(exit_block):
                 raise SystemExit, "You won't go out there."
