@@ -22,10 +22,10 @@ class Level(object):
 			bwall += random.choice(['W','W','W','W','X'])
 
 		middlewalls = []
-		for x in range(18):
+		for x in range(13):
 			wall = ''
 			wall += random.choice(['W','W','W','W','X'])
-			wall += '.................'
+			wall += '..................'
 			wall += random.choice(['W','W','W','W','X'])
 			middlewalls.append(wall)
 
