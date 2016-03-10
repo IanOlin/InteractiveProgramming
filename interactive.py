@@ -224,6 +224,12 @@ if __name__ == '__main__':
         time.sleep(.05)
         if timer == True:
             countdown -= .05
+            pygame.mixer.music.load('sounds/Uboa_long.ogg')
+            if countdown <.25:
+                pygame.mixer.music.play(0)
+                uboa = pygame.image.load('images/UBOAAAAA.png')
+                uboa = pygame.transform.scale(uboa, size)
+                view.screen.blit(uboa,(0,0))
+                pygame.display.update()
             if countdown <0 :
-                #do stuff
                 running = False
