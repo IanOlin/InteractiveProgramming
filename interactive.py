@@ -13,8 +13,6 @@ from spritesheet_functions import SpriteSheet, Wall, ExitBlock
 # at least in 320 I guess it's 32x32 in 640
 """globals: walls, exit_blocks"""
 
-walls = [] # List to hold the walls
-exit_blocks = [] # List to hold the exits
 
 class GameView(object):
     """this view handles displaying most of the things.
@@ -84,6 +82,21 @@ class GameModel(object):
         """ update the model state"""
         self.char.update(control)
 
+class Wall(object):
+    """it walls
+
+    attribute: rect"""
+    def __init__(self, pos):
+        walls.append(self)
+        self.rect = pygame.Rect(pos[0], pos[1], 32, 32)
+
+class ExitBlock(object):
+    """It exits
+
+    attribute: rect"""
+    def __init__(self, pos):
+        exit_blocks.append(self)
+        self.rect = pygame.Rect(pos[0], pos[1], 32, 32)
 
 
 class CharacterSprite(pygame.sprite.Sprite):
@@ -223,7 +236,8 @@ if __name__ == '__main__':
     #That works, but it doesn't generate in the right aspect ratio
     size = (640, 480) # useful
     # size = (320, 240)  # 'native'
-
+    walls = [] # List to hold the walls
+    exit_blocks = [] # List to hold the exits
     model = GameModel(size[0], size[1])
     view = GameView(model, size)
     controller = GameController(model)

@@ -17,18 +17,3 @@ class SpriteSheet(object):
         return image
 
 
-class Wall(object):
-    """it walls
-
-    attribute: rect"""
-    def __init__(self, pos):
-        walls.append(self)
-        self.rect = pygame.Rect(pos[0], pos[1], 32, 32)
-
-class ExitBlock(object):
-    """It exits
-
-    attribute: rect"""
-    def __init__(self, pos):
-        exit_blocks.append(self)
-        self.rect = pygame.Rect(pos[0], pos[1], 32, 32)
