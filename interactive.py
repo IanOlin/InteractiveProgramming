@@ -7,12 +7,6 @@ from spritesheet_functions import SpriteSheet
 from player import CharacterSprite
 from level import Level, WallSprite, DoorSprite, FloorSprite
 
-#TODO split the model view and controller into different files maybe?
-# docs:
-# pygame.org/project-Rect+collision+Reponse-1061-.html
-# that link was hand typed so fuck off
-# the screen is a 20x15 grid of 16x16 pixel tiles
-# at least in 320 I guess it's 32x32 in 640
 """globals: walls, exit_blocks"""
 
 
@@ -23,7 +17,7 @@ class GameView(object):
     def __init__(self, model, size):
         self.model = model
         self.screen = pygame.display.set_mode(size)
-        pygame.mixer.music.load('sounds/TheDarkLake.mp3') #this music plays
+        pygame.mixer.music.load('sounds/TheDarkLake.mp3') # this music plays
         pygame.mixer.music.play(-1)
         self.background = 'images/room2.png'
         self.wallsprite = WallSprite()
@@ -38,7 +32,7 @@ class GameView(object):
         self.screen.blit(scaled_bg, (0,0))
         char = self.model.char.image
         self.screen.blit(char, (self.model.char.x,self.model.char.y))
-        
+
         pygame.display.flip()
 
     def build_surface(self, room_map):
@@ -72,9 +66,6 @@ class GameModel(object):
     def __init__(self, width, height):
         self.height = height
         self.width = width
-
-        # Define things like brick height and width here for BB
-        # Also creates list of bricks, paddle, and ball
 
         self.room_map = ["....................",
                          "....................",
@@ -182,7 +173,7 @@ class GameController(object):
 
         for exit_block in exit_blocks:
             if self.model.char.rect.colliderect(exit_block):
-                raise SystemExit, "You lose, fucker!"
+                raise SystemExit, "You won't go out there."
         for connection in connections:
             if self.model.char.rect.colliderect(connection):
                 new_spaces = [(40, 200), (560,200), (240,40),(240, 340)]
@@ -203,9 +194,6 @@ class GameController(object):
 
 if __name__ == '__main__':
     pygame.init()
-    #size = (VideoInfo.current_w, VideoInfo.current_h)
-    # sets the game to fillscreen
-    #That works, but it doesn't generate in the right aspect ratio
     size = (640, 480) # useful
     # size = (320, 240)  # 'native'
     walls = [] # List to hold the walls
