@@ -13,6 +13,9 @@ from spritesheet_functions import SpriteSheet, Wall, ExitBlock
 # at least in 320 I guess it's 32x32 in 640
 """globals: walls, exit_blocks"""
 
+walls = [] # List to hold the walls
+exit_blocks = [] # List to hold the exits
+
 class GameView(object):
     """this view handles displaying most of the things.
 
@@ -202,7 +205,7 @@ class GameController(object):
             self.model.char.move_right(self.ri)
 
         if pressed[pygame.K_UP]:
-            self.ui = (self.ui + 1) % 4
+            self.ui = (self.ui + 1) % 4walls
             self.model.char.move_up(self.ui)
 
         if pressed[pygame.K_DOWN]:
@@ -220,8 +223,7 @@ if __name__ == '__main__':
     #That works, but it doesn't generate in the right aspect ratio
     size = (640, 480) # useful
     # size = (320, 240)  # 'native'
-    walls = [] # List to hold the walls
-    exit_blocks = [] # List to hold the exits
+
     model = GameModel(size[0], size[1])
     view = GameView(model, size)
     controller = GameController(model)
