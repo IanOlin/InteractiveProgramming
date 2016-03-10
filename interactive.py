@@ -150,7 +150,7 @@ class GameController(object):
         self.di = 0
         self.ri = 0
         self.ui = 0
-        self.waking =0 
+        self.waking =0
 
     def update(self):
         """ Updates the game state based on keypresses.
@@ -184,7 +184,7 @@ class GameController(object):
                 raise SystemExit, "You won't go out there."
         for connection in connections:
             if self.model.char.rect.colliderect(connection):
-                new_spaces = [(40, 200), (560,200), (240,40),(240, 340)]
+                new_spaces = [(34, 200), (570,200), (240,6),(240, 384)]
                 new_space = choice(new_spaces)
                 self.model.char.x = new_space[0]
                 self.model.char.y = new_space[1]

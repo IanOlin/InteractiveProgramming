@@ -24,10 +24,18 @@ class Level(object):
 		middlewalls = []
 		for x in range(13):
 			wall = ''
-			wall += random.choice(['W','W','W','W','W','W','C'])
-			wall += '..................'
-			wall += random.choice(['W','W','W','W','W','W','C'])
-			wall += '..................'
+			if x < 2 or x > 10:
+				wall += random.choice(['W','W','W','W','W','W','C'])
+				wall += '..................'
+				wall += random.choice(['W','W','W','W','W','W','C'])
+
+			else:
+				wall += random.choice(['W','W','W','W','W','W','C'])
+				wall += '..'
+				for y in range(14):
+					wall += random.choice(['.','.','.','.','W'])
+				wall += '..'
+				wall += random.choice(['W','W','W','W','W','W','C'])
 			middlewalls.append(wall)
 
 		walls = []
