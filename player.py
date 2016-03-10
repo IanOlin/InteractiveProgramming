@@ -1,18 +1,20 @@
 import pygame
 from pygame.locals import *
-
+from spritesheet_functions import SpriteSheet
 class CharacterSprite(pygame.sprite.Sprite):
     """Sprite representation of the character.
 
     attributes: x, y, walking_frames_l, walking_frames_r, walking_frames_u,
     walking_frames_d, step_size, direction, image, rect"""
-    def __init__(self, x_coor, y_coor):
+    def __init__(self, x_coor, y_coor, walls):
 
         super(CharacterSprite, self).__init__()
 
         self.x = x_coor
         self.y = y_coor
         self.step_size = 5
+        self.walls = walls
+        #opens the can of worms of passing in a mutable datatype
 
         self.walking_frames_l = []
         self.walking_frames_r = []
@@ -52,7 +54,7 @@ class CharacterSprite(pygame.sprite.Sprite):
         self.x -= self.step_size
         self.rect.move_ip(-self.step_size, 0)
 
-        for wall in walls:
+        for wall in self.walls:
             if self.rect.colliderect(wall.rect):
                 self.rect.left = wall.rect.right
                 self.x += self.step_size
@@ -64,7 +66,7 @@ class CharacterSprite(pygame.sprite.Sprite):
         self.x += self.step_size
         self.rect.move_ip(self.step_size, 0)
 
-        for wall in walls:
+        for wall in self.walls:
             if self.rect.colliderect(wall.rect):
                 self.rect.right = wall.rect.left
                 self.x -= self.step_size
@@ -76,7 +78,7 @@ class CharacterSprite(pygame.sprite.Sprite):
         self.y -= self.step_size
         self.rect.move_ip(0, -self.step_size)
 
-        for wall in walls:
+        for wall in self.walls:
             if self.rect.colliderect(wall.rect):
                 self.rect.top = wall.rect.bottom
                 self.y += self.step_size
@@ -88,7 +90,7 @@ class CharacterSprite(pygame.sprite.Sprite):
         self.y += self.step_size
         self.rect.move_ip(0, self.step_size)
 
-        for wall in walls:
+        for wall in self.walls:
             if self.rect.colliderect(wall.rect):
                 self.rect.bottom = wall.rect.top
                 self.y -= self.step_size

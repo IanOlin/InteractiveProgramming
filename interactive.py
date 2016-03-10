@@ -4,7 +4,7 @@ from pygame.locals import *
 import time
 from random import choice
 from spritesheet_functions import SpriteSheet
-
+from player import CharacterSprite
 #TODO split the model view and controller into different files maybe?
 # docs:
 # pygame.org/project-Rect+collision+Reponse-1061-.html
@@ -48,7 +48,7 @@ class GameModel(object):
         # Define things like brick height and width here for BB
         # Also creates list of bricks, paddle, and ball
 
-        self.char = CharacterSprite(256,256)
+        self.char = CharacterSprite(256,256,walls)
 
         self.game_map = ["....................",
                          "....................",
