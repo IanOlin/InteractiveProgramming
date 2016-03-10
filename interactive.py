@@ -62,12 +62,12 @@ class GameView(object):
 class GameModel(object):
     """This is a test model for my game
 
-    attributes: height, width, char, room_map"""
+    attributes: height, width, char, start_map, room_map"""
     def __init__(self, width, height):
         self.height = height
         self.width = width
 
-        self.room_map = ["....................",
+        self.start_map = ["....................",
                          "....................",
                          "....................",
                          "....................",
@@ -82,6 +82,7 @@ class GameModel(object):
                          "....WWWWWXXWWWWW....",
                          "....................",
                          "...................."]
+        self.room_map = self.start_map
 
         self.generate_room(self.room_map)
 
@@ -159,10 +160,21 @@ class GameController(object):
         global timer
         if pressed[pygame.K_9]:
             self.waking += 1
-            print 'pressed'
-            print self.waking*random()
             if self.waking * random() > 2:
                 timer = True
+            self.model.char.x = 384
+            self.model.char.y = 224
+
+            self.model.char.image = self.model.char.walking_frames_d[1]
+            self.model.char.rect = self.model.char.image.get_rect().inflate(-4,-32)
+            self.model.char.rect.move_ip(self.model.char.x,self.model.char.y + 16)
+
+            self.model.room_map = self.model.start_map
+            self.model.generate_room(self.model.start_map)
+            self.view.background = 'images/room2.png'
+            self.model.char.walls = walls
+
+
         if pressed[pygame.K_LEFT]:
             self.li = (self.li + 1) % 4
             self.model.char.move_left(self.li)
