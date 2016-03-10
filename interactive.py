@@ -218,7 +218,7 @@ class GameController(object):
             self.model.char.move_right(self.ri)
 
         if pressed[pygame.K_UP]:
-            self.ui = (self.ui + 1) % 4walls
+            self.ui = (self.ui + 1) % 4
             self.model.char.move_up(self.ui)
 
         if pressed[pygame.K_DOWN]:
