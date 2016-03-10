@@ -43,7 +43,7 @@ class GameView(object):
         for row in self.model.room_map:
             for col in row:
                 if col == "W":
-                    self.screen.blit(self.wallsprite.tiles[0],( self.x, self.y))
+                    self.screen.blit(self.wallsprite.image,( self.x, self.y))
                 self.x += 32
             self.y += 32
             self.x=0
