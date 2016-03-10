@@ -24,7 +24,7 @@ class Level(object):
 		#15 strings of 20 characters
 
 		#generate top wall
-		self.threshold = 13. - count
+		self.threshold = 13. - (count*1.5)
 		twall = ''
 		for x in range(20):
 			if x < 1 or x > 18:

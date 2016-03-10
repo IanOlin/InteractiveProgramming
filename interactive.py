@@ -156,29 +156,32 @@ class GameController(object):
         self.waking = 0
         self.room_counter = 0
 
+    def reset_state(self):
+        global timer
+        self.waking += 1
+        if self.waking * random() > 2:
+            timer = True
+        self.model.room_map = self.model.start_map
+        self.model.generate_room(self.model.start_map)
+        self.view.background = 'images/room2.png'
+        self.model.char.walls = walls
+        self.model.char.x = 384
+        self.model.char.y = 224
+        self.room_counter = 0
+
+        self.model.char.image = self.model.char.walking_frames_d[1]
+        self.model.char.rect = self.model.char.image.get_rect().inflate(-4,-32)
+        self.model.char.rect.move_ip(self.model.char.x,self.model.char.y + 16)
+
+
     def update(self):
         """ Updates the game state based on keypresses.
         Also animates walking ALL DIRECTIONS now"""
+        self.effect = pygame.mixer.Sound('sounds/Uboa_short.wav')
         pressed = pygame.key.get_pressed()
-        global timer
         if pressed[pygame.K_9]:
             #This is the wake up function
-            self.waking += 1
-            if self.waking * random() > 2:
-                timer = True
-            self.model.char.x = 384
-            self.model.char.y = 224
-            self.room_counter = 0
-
-            self.model.char.image = self.model.char.walking_frames_d[1]
-            self.model.char.rect = self.model.char.image.get_rect().inflate(-4,-32)
-            self.model.char.rect.move_ip(self.model.char.x,self.model.char.y + 16)
-
-            self.model.room_map = self.model.start_map
-            self.model.generate_room(self.model.start_map)
-            self.view.background = 'images/room2.png'
-            self.model.char.walls = walls
-
+            self.reset_state()
 
         if pressed[pygame.K_LEFT]:
             self.li = (self.li + 1) % 4
@@ -199,7 +202,11 @@ class GameController(object):
         #these functions check for collisions with interactive blocks
         for exit_block in exit_blocks:
             if self.model.char.rect.colliderect(exit_block):
-                raise SystemExit, "You won't go out there."
+                print "You won't go out there."
+                self.effect.play()
+                time.sleep(0.10)
+                self.reset_state()
+
         for connection in connections:
             if self.model.char.rect.colliderect(connection):
                 new_spaces = [(40, 200), (560,200), (240,10),(240, 380)]
@@ -245,6 +252,8 @@ if __name__ == '__main__':
             pygame.mixer.music.load('sounds/Uboa_long.wav')
             if countdown < .25:
                 pygame.mixer.music.play(0)
+                size = (1920,1080)
+                pygame.display.set_mode(size)
                 uboa = pygame.image.load('images/UBOAAAAA.png')
                 uboa = pygame.transform.scale(uboa, size)
                 view.screen.blit(uboa,(0,0))
