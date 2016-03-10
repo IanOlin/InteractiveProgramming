@@ -54,7 +54,7 @@ class GameModel(object):
                          "....................",
                          "....................",
                          "....................",
-                         "......WXWW..........",
+                         "......WCWW..........",
                          "....WWW..WWWWW......",
                          "....W........W......",
                          "....W........WWW....",
@@ -65,7 +65,7 @@ class GameModel(object):
                          "....................",
                          "...................."]
 
-        # Parse the level string above. W = wall, X = exit
+        # Parse the level string above. W = wall, X = exit, C = connection
         x = y = 0
         for row in self.game_map:
             for col in row:
@@ -73,6 +73,8 @@ class GameModel(object):
                     Wall((x, y))
                 if col == "X":
                     ExitBlock((x, y))
+                if col == "C":
+                    Connection((x,y))
                 x += 32
             y += 32
             x = 0
@@ -98,6 +100,13 @@ class ExitBlock(object):
     def __init__(self, pos):
         exit_blocks.append(self)
         self.rect = pygame.Rect(pos[0], pos[1], 32, 32)
+
+class Connection(object):
+
+    def __init__(self, pos):
+        connections.append(self)
+        self.rect = pygame.Rect(pos[0], pos[1], 32, 32)
+
 
 
 class GameController(object):
@@ -136,7 +145,11 @@ class GameController(object):
         for exit_block in exit_blocks:
             if self.model.char.rect.colliderect(exit_block):
                 raise SystemExit, "You lose, fucker!"
-
+        for collection in connections:
+            if self.model.char.rect.colliderect(collection):
+#                model = GameModel(size[0], size[1])
+#                view = GameView(model, size)
+#                controller = GameController(model)
 
 if __name__ == '__main__':
     pygame.init()
@@ -147,6 +160,7 @@ if __name__ == '__main__':
     # size = (320, 240)  # 'native'
     walls = [] # List to hold the walls
     exit_blocks = [] # List to hold the exits
+    connections = [] # List to hold all connections
     model = GameModel(size[0], size[1])
     view = GameView(model, size)
     controller = GameController(model)
