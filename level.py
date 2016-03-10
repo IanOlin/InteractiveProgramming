@@ -45,7 +45,7 @@ class WallSprite(pygame.sprite.Sprite):
         self.tiles = []
 
         #sprite_sheet = SpriteSheet('images/rooms/Tileset.png')
-        sprite_sheet = SpriteSheet('images/room2.png')
+        sprite_sheet = SpriteSheet('images/white.png')
         self.tiles.append(sprite_sheet.get_image(256,256,100,100))
-        self.image = sprite_sheet.get_image(256,256,100,100)
+        self.image = sprite_sheet.get_image(0,0,100,100)
     

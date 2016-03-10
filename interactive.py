@@ -208,4 +208,4 @@ if __name__ == '__main__':
         model.update()
         controller.update()
         view.draw(view.background)
-        time.sleep(.05)
+        time.sleep(.15)
