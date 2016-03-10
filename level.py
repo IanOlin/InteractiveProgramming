@@ -34,7 +34,7 @@ class Level(object):
 		for wall in middlewalls:
 			walls.append(wall)
 		walls.append(bwall)
-		print walls
+		return walls
 
 
 

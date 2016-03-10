@@ -5,6 +5,7 @@ import time
 from random import choice
 from spritesheet_functions import SpriteSheet
 from player import CharacterSprite
+from level import Level
 #TODO split the model view and controller into different files maybe?
 # docs:
 # pygame.org/project-Rect+collision+Reponse-1061-.html
@@ -17,21 +18,23 @@ from player import CharacterSprite
 class GameView(object):
     """this view handles displaying most of the things.
 
-    attributes: model, screen"""
+    attributes: model, screen, background"""
     def __init__(self, model, size):
         self.model = model
         self.screen = pygame.display.set_mode(size)
         pygame.mixer.music.load('sounds/TheDarkLake.mp3') #this music plays
         pygame.mixer.music.play(-1)
+        self.background = 'images/room2.png'
 
-    def draw(self):
+    def draw(self, filename):
         """ Draw the game to the pygame window"""
-        background = pygame.image.load('images/room2.png').convert()
+        background = pygame.image.load(filename).convert()
+        # print filename
         scaled_bg = pygame.transform.scale(background, size)
         self.screen.blit(scaled_bg, (0,0))
         char = self.model.char.image
         self.screen.blit(char, (self.model.char.x,self.model.char.y))
-        pygame.draw.rect(self.screen, (255, 200, 0), self.model.char.rect)
+        # pygame.draw.rect(self.screen, (255, 200, 0), self.model.char.rect)
         # draws a yellow box where the rect is
         pygame.display.flip()
 
@@ -39,7 +42,7 @@ class GameView(object):
 class GameModel(object):
     """This is a test model for my game
 
-    attributes: height, width, char, game_map"""
+    attributes: height, width, char, room_map"""
     def __init__(self, width, height):
         self.height = height
         self.width = width
@@ -47,9 +50,7 @@ class GameModel(object):
         # Define things like brick height and width here for BB
         # Also creates list of bricks, paddle, and ball
 
-        self.char = CharacterSprite(256,256,walls)
-
-        self.game_map = ["....................",
+        self.room_map = ["....................",
                          "....................",
                          "....................",
                          "....................",
@@ -65,9 +66,19 @@ class GameModel(object):
                          "....................",
                          "...................."]
 
+        self.generate_room(self.room_map)
+
+        self.char = CharacterSprite(256,256,walls)
+
         # Parse the level string above. W = wall, X = exit, C = connection
+    def generate_room(self, room):
+        """feed it a list of strings and it populates the globals with rects"""
+        del walls[:] # List to hold the walls
+        del exit_blocks[:] # List to hold the exits
+        del connections[:] # List to hold all connections
+        self.room_map = room
         x = y = 0
-        for row in self.game_map:
+        for row in self.room_map:
             for col in row:
                 if col == "W":
                     Wall((x, y))
@@ -78,6 +89,7 @@ class GameModel(object):
                 x += 32
             y += 32
             x = 0
+
 
     def update(self, control=0):
         """ update the model state"""
@@ -114,9 +126,10 @@ class GameController(object):
     direction that controls animation state.
 
     attributes: model, li, di, ri, ui"""
-    def __init__(self, model):
+    def __init__(self, model, view):
         """ initializes the model and counters"""
         self.model = model
+        self.view = view
         self.li = 0
         self.di = 0
         self.ri = 0
@@ -145,11 +158,24 @@ class GameController(object):
         for exit_block in exit_blocks:
             if self.model.char.rect.colliderect(exit_block):
                 raise SystemExit, "You lose, fucker!"
-        for collection in connections:
-            if self.model.char.rect.colliderect(collection):
-#                model = GameModel(size[0], size[1])
-#                view = GameView(model, size)
-#                controller = GameController(model)
+        for connection in connections:
+            if self.model.char.rect.colliderect(connection):
+            #    model = GameModel(size[0], size[1])
+            #    view = GameView(model, size)
+            #    controller = GameController(model)
+                self.model.char.x = 256
+                self.model.char.y = 256
+
+                self.model.char.image = self.model.char.walking_frames_d[1]
+                self.model.char.rect = self.model.char.image.get_rect().inflate(-4,-32)
+                self.model.char.rect.move_ip(self.model.char.x,self.model.char.y + 16)
+
+
+                self.model.room_map = level.random_gen()
+                self.model.generate_room(self.model.room_map)
+                self.view.background = 'images/rooms/yume-24.png'
+
+                self.model.char.walls = walls
 
 if __name__ == '__main__':
     pygame.init()
@@ -163,7 +189,8 @@ if __name__ == '__main__':
     connections = [] # List to hold all connections
     model = GameModel(size[0], size[1])
     view = GameView(model, size)
-    controller = GameController(model)
+    controller = GameController(model, view)
+    level = Level()
     running = True
     while running:
         for event in pygame.event.get():
@@ -171,5 +198,5 @@ if __name__ == '__main__':
                 running = False
         model.update()
         controller.update()
-        view.draw()
+        view.draw(view.background)
         time.sleep(.05)
