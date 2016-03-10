@@ -27,7 +27,7 @@ class GameView(object):
         pygame.mixer.music.play(-1)
         self.background = 'images/room2.png'
         self.wallsprite = WallSprite()
-        self.x=0
+        self.x = 0
         self.y = 0
 
     def draw(self, filename):
@@ -39,15 +39,22 @@ class GameView(object):
         char = self.model.char.image
         self.screen.blit(char, (self.model.char.x,self.model.char.y))
         
-        
-        for row in self.model.room_map:
+        pygame.display.flip()
+
+    def build_surface(self, room_map):
+        surf = pygame.Surface(size)
+        x = 0
+        y = 0
+        wallsprite = WallSprite()
+        wall = wallsprite.image
+        for row in room_map:
             for col in row:
                 if col == "W":
-                    self.screen.blit(self.wallsprite.image,( self.x, self.y))
-                self.x += 32
-            self.y += 32
-            self.x=0
-        pygame.display.flip()
+                    surf.blit(wall,(x, y))
+                x += 32
+            y += 32
+            x = 0
+        pygame.image.save(surf, 'currentroom.png')
 
 
 class GameModel(object):
@@ -183,7 +190,8 @@ class GameController(object):
 
                 self.model.room_map = level.random_gen()
                 self.model.generate_room(self.model.room_map)
-                self.view.background = 'images/transparent.png'
+                self.view.build_surface(self.model.room_map)
+                self.view.background = 'currentroom.png'
                 self.model.char.walls = walls
 
 if __name__ == '__main__':
@@ -208,4 +216,4 @@ if __name__ == '__main__':
         model.update()
         controller.update()
         view.draw(view.background)
-        time.sleep(.15)
+        time.sleep(.05)
