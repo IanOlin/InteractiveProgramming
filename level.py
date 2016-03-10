@@ -37,6 +37,16 @@ class Level(object):
 		return walls
 
 
+class WallSprite(pygame.sprite.Sprite):
 
+    def __init__(self):
+        super(WallSprite, self).__init__()
+
+        self.tiles = []
+
+        #sprite_sheet = SpriteSheet('images/rooms/Tileset.png')
+        sprite_sheet = SpriteSheet('images/room2.png')
+        self.tiles.append(sprite_sheet.get_image(256,256,100,100))
+    
 level = Level()
 level.random_gen()
