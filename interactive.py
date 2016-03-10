@@ -183,15 +183,6 @@ class GameController(object):
 
                 self.model.room_map = level.random_gen()
                 self.model.generate_room(self.model.room_map)
-                x =y =0
-                wallsprite = WallSprite()
-                for row in self.model.room_map:
-                    for col in row:
-                        if col == "W":
-                            self.view.screen.blit(wallsprite.tiles[0],( x, y))
-                        x += 32
-                    y += 32
-                    x =0
                 self.view.background = 'images/transparent.png'
                 self.model.char.walls = walls
 

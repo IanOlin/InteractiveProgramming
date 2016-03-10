@@ -48,5 +48,3 @@ class WallSprite(pygame.sprite.Sprite):
         sprite_sheet = SpriteSheet('images/room2.png')
         self.tiles.append(sprite_sheet.get_image(256,256,100,100))
     
-level = Level()
-level.random_gen()
