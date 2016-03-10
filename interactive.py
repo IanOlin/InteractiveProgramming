@@ -60,7 +60,7 @@ class GameModel(object):
                          "....W..........W....",
                          "....W..........W....",
                          "....W..........W....",
-                         "....W..........W....",
+                         "....WWWWWXXWWWWW....",
                          "....WWWWWXXWWWWW....",
                          "...................."]
 
@@ -164,6 +164,7 @@ class CharacterSprite(pygame.sprite.Sprite):
         for wall in walls:
             if self.rect.colliderect(wall.rect):
                 self.rect.left = wall.rect.right
+                self.x += self.step_size
 
         self.image = self.walking_frames_l[li]
         self.effect.play()
@@ -175,6 +176,7 @@ class CharacterSprite(pygame.sprite.Sprite):
         for wall in walls:
             if self.rect.colliderect(wall.rect):
                 self.rect.right = wall.rect.left
+                self.x -= self.step_size
 
         self.image = self.walking_frames_r[ri]
         self.effect.play()
@@ -186,6 +188,7 @@ class CharacterSprite(pygame.sprite.Sprite):
         for wall in walls:
             if self.rect.colliderect(wall.rect):
                 self.rect.top = wall.rect.bottom
+                self.y += self.step_size
 
         self.image = self.walking_frames_u[ui]
         self.effect.play()
@@ -197,6 +200,7 @@ class CharacterSprite(pygame.sprite.Sprite):
         for wall in walls:
             if self.rect.colliderect(wall.rect):
                 self.rect.bottom = wall.rect.top
+                self.y -= self.step_size
 
         self.image = self.walking_frames_d[di]
         self.effect.play()
