@@ -3,6 +3,7 @@ import pygame
 from pygame.locals import *
 import time
 from random import choice
+from spritesheet-functions import SpriteSheet
 
 #TODO split the model view and controller into different files maybe?
 # docs:
