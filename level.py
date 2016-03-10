@@ -19,7 +19,7 @@ class Level(object):
 
 		bwall = ''
 		for x in range(20):
-			bwall += random.choice(['W','W','W','W','W','W','W'])
+			bwall += random.choice(['W','W','W','W','W','W','C'])
 
 		middlewalls = []
 		for x in range(13):

@@ -94,7 +94,7 @@ class GameModel(object):
 
         self.generate_room(self.room_map)
 
-        self.char = CharacterSprite(256,256,walls)
+        self.char = CharacterSprite(384,224,walls)
 
         # Parse the level string above. W = wall, X = exit, C = connection
     def generate_room(self, room):
@@ -185,8 +185,10 @@ class GameController(object):
                 raise SystemExit, "You lose, fucker!"
         for connection in connections:
             if self.model.char.rect.colliderect(connection):
-                self.model.char.x = 256
-                self.model.char.y = 256
+                new_spaces = [(40, 200), (560,200), (240,40),(240, 340)]
+                new_space = choice(new_spaces)
+                self.model.char.x = new_space[0]
+                self.model.char.y = new_space[1]
 
                 self.model.char.image = self.model.char.walking_frames_d[1]
                 self.model.char.rect = self.model.char.image.get_rect().inflate(-4,-32)

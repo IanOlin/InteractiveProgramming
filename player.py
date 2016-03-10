@@ -43,7 +43,7 @@ class CharacterSprite(pygame.sprite.Sprite):
         self.walking_frames_u[3] = (self.walking_frames_u[1])
         self.walking_frames_r[3] = (self.walking_frames_r[1])
         self.image = self.walking_frames_d[1]
-        self.rect = self.image.get_rect().inflate(-4,-32)
+        self.rect = self.image.get_rect().inflate(-8,-32)
         self.rect.move_ip(self.x,self.y + 16)
 
     """These functions move the thing. Should check for collisions and adjust
