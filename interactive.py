@@ -2,7 +2,7 @@
 import pygame
 from pygame.locals import *
 import time
-from random import choice
+from random import choice, random
 from spritesheet_functions import SpriteSheet
 from player import CharacterSprite
 from level import Level, WallSprite, DoorSprite, FloorSprite
@@ -150,11 +150,19 @@ class GameController(object):
         self.di = 0
         self.ri = 0
         self.ui = 0
+        self.waking =0 
 
     def update(self):
         """ Updates the game state based on keypresses.
         Also animates walking ALL DIRECTIONS now"""
         pressed = pygame.key.get_pressed()
+        global timer
+        if pressed[pygame.K_9]:
+            self.waking += 1
+            print 'pressed'
+            print self.waking*random()
+            if self.waking * random() > 2:
+                timer = True
         if pressed[pygame.K_LEFT]:
             self.li = (self.li + 1) % 4
             self.model.char.move_left(self.li)
@@ -204,6 +212,8 @@ if __name__ == '__main__':
     controller = GameController(model, view)
     level = Level()
     running = True
+    timer =False
+    countdown = 5
     while running:
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -212,3 +222,8 @@ if __name__ == '__main__':
         controller.update()
         view.draw(view.background)
         time.sleep(.05)
+        if timer == True:
+            countdown -= .05
+            if countdown <0 :
+                #do stuff
+                running = False
