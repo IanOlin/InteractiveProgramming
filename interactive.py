@@ -236,7 +236,7 @@ if __name__ == '__main__':
         time.sleep(.05)
         if timer == True:
             countdown -= .05
-            pygame.mixer.music.load('sounds/Uboa_long.ogg')
+            pygame.mixer.music.load('sounds/Uboa_long.wav')
             if countdown <.25:
                 pygame.mixer.music.play(0)
                 uboa = pygame.image.load('images/UBOAAAAA.png')
