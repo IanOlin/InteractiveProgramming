@@ -7,3 +7,6 @@ Have pygame and python installed on your computer. Run interactive.py from withi
 #TODO
 Use more rooms.
 Generate connected rooms.
+Here are some links for random generation
+http://pygame.org/project-Random+Dungeon+Generator-2007-.html
+http://members.gamedev.net/vertexnormal/tutorial_randlev1.html
