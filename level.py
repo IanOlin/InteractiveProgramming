@@ -14,19 +14,20 @@ class Level(object):
 
 		#generate top wall
 		twall = ''
-		for x in range(15):
-			twall += random.choice(['W','W','W','W','X'])
+		for x in range(20):
+			twall += random.choice(['W','W','W','W','W','W','C'])
 
 		bwall = ''
-		for x in range(15):
-			bwall += random.choice(['W','W','W','W','X'])
+		for x in range(20):
+			bwall += random.choice(['W','W','W','W','W','W','W'])
 
 		middlewalls = []
 		for x in range(13):
 			wall = ''
-			wall += random.choice(['W','W','W','W','X'])
+			wall += random.choice(['W','W','W','W','W','W','C'])
 			wall += '..................'
-			wall += random.choice(['W','W','W','W','X'])
+			wall += random.choice(['W','W','W','W','W','W','C'])
+			wall += '..................'
 			middlewalls.append(wall)
 
 		walls = []
@@ -45,6 +46,34 @@ class WallSprite(pygame.sprite.Sprite):
         self.tiles = []
 
         #sprite_sheet = SpriteSheet('images/rooms/Tileset.png')
-        sprite_sheet = SpriteSheet('images/white.png')
-        self.tiles.append(sprite_sheet.get_image(256,256,100,100))
-        self.image = sprite_sheet.get_image(0,0,32,32)
+        sprite_sheet = SpriteSheet('images/tilesets/walls.png')#3 x 4
+        horiz = [0, 32, 64]
+        vert= [0, 32, 64, 96]
+        self.image = sprite_sheet.get_image(random.choice(horiz),random.choice(vert),32,32)
+
+class DoorSprite(pygame.sprite.Sprite):
+
+    def __init__(self):
+        super(DoorSprite, self).__init__()
+
+        self.tiles = []
+
+        sprite_sheet = SpriteSheet('images/tilesets/doors.png')#4 x 1
+        horiz = [0, 32, 64, 96]
+        vert= [0]
+
+        self.image = sprite_sheet.get_image(random.choice(horiz),random.choice(vert),32,32)
+#floor 7x 6
+#door 4x1
+class FloorSprite(pygame.sprite.Sprite):
+
+    def __init__(self):
+        super(FloorSprite, self).__init__()
+
+        self.tiles = []
+
+        sprite_sheet = SpriteSheet('images/tilesets/floors.png')#7x6
+        horiz = [0, 32, 64, 96, 128, 160, 192]
+        vert= [0, 32, 64, 96, 128, 160]
+
+        self.image = sprite_sheet.get_image(random.choice(horiz),random.choice(vert),32,32)

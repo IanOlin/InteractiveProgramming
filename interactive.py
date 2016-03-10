@@ -5,7 +5,7 @@ import time
 from random import choice
 from spritesheet_functions import SpriteSheet
 from player import CharacterSprite
-from level import Level, WallSprite
+from level import Level, WallSprite, DoorSprite, FloorSprite
 
 #TODO split the model view and controller into different files maybe?
 # docs:
@@ -47,10 +47,18 @@ class GameView(object):
         y = 0
         wallsprite = WallSprite()
         wall = wallsprite.image
+        doorsprite = DoorSprite()
+        door = doorsprite.image
+        floorsprite = FloorSprite()
+        floor = floorsprite.image
         for row in room_map:
             for col in row:
                 if col == "W":
                     surf.blit(wall,(x, y))
+                if col == "C":
+                    surf.blit(door,(x, y))
+                if col == ".":
+                    surf.blit(floor,(x,y))
                 x += 32
             y += 32
             x = 0
@@ -177,9 +185,6 @@ class GameController(object):
                 raise SystemExit, "You lose, fucker!"
         for connection in connections:
             if self.model.char.rect.colliderect(connection):
-            #    model = GameModel(size[0], size[1])
-            #    view = GameView(model, size)
-            #    controller = GameController(model)
                 self.model.char.x = 256
                 self.model.char.y = 256
 
