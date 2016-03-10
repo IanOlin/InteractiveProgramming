@@ -7,3 +7,4 @@ Have pygame and python installed on your computer. Run interactive.py from withi
 # Controls
 Arrow keys to move   
 9 to wake up
+Play for a few minutes and try waking up a couple of times
