@@ -5,7 +5,7 @@ class CharacterSprite(pygame.sprite.Sprite):
     """Sprite representation of the character.
 
     attributes: x, y, walking_frames_l, walking_frames_r, walking_frames_u,
-    walking_frames_d, step_size, direction, image, rect"""
+    walking_frames_d, walls, step_size, direction, image, rect"""
     def __init__(self, x_coor, y_coor, walls):
 
         super(CharacterSprite, self).__init__()
