@@ -10,11 +10,11 @@ class Level(object):
 	def __init__(self, x=0):
 			self.x = x
 
-	def choose(self):
+	def choose(self,side):
 		res = ''
 		r = random.randint(0,100)
 		if r < self.threshold:
-			res += 'C'
+			res += side
 		else:
 			res += 'W'
 		return res
@@ -30,31 +30,32 @@ class Level(object):
 			if x < 1 or x > 18:
 				twall+= 'W'
 			else:
-				twall += self.choose()
+				twall += self.choose('T')
 
+		#generate bottom wall
 		bwall = ''
 		for x in range(20):
 			if x < 1 or x > 18:
 				bwall += 'W'
 			else:
-				bwall += self.choose()
+				bwall += self.choose('B')
 
+		#generate middle walls
 		middlewalls = []
 		for x in range(13):
 			wall = ''
 			if x < 2 or x > 10:
-				wall += self.choose()
+				wall += self.choose('L')
 				wall += '..................'
-				wall += self.choose()
+				wall += self.choose('R')
 
 			else:
-				wall += self.choose()
+				wall += self.choose('L')
 				wall += '..'
 				for y in range(14):
 					wall += random.choice(['.','.','.','.','W'])
 				wall += '..'
-				wall += self.choose()
-				# wall += random.choice(['W','W','W','W','W','W','C'])
+				wall += self.choose('R')
 			middlewalls.append(wall)
 
 		walls = []
@@ -77,6 +78,7 @@ class WallSprite(pygame.sprite.Sprite):
         vert= [0, 32, 64, 96]
         self.image = sprite_sheet.get_image(random.choice(horiz),random.choice(vert),32,32)
 
+
 class DoorSprite(pygame.sprite.Sprite):
     """This is the class for all of the door sprites
 
@@ -90,6 +92,8 @@ class DoorSprite(pygame.sprite.Sprite):
         vert= [0]
 
         self.image = sprite_sheet.get_image(random.choice(horiz),random.choice(vert),32,32)
+
+
 class FloorSprite(pygame.sprite.Sprite):
     """This is the class for all of the floor sprites
 
